@@ -27,3 +27,4 @@ Gulp Family
   10. "gulp-sourcemaps": "^3.0.0",
   11. "gulp-uglify": "^3.0.2",
   12. "watch": "^1.0.2"
+  13. "gulp-autoprefixer": "^7.0.1",
