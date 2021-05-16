@@ -19,13 +19,13 @@ function browserSync() {
 };
 
 function htmlTask() {
-  return src('*.html')
+  return src('src/*.html')
   .pipe(dest('dist/'))
   .pipe(browsersync.stream());
 }
 
 function styleTask(){
-  return src('css/*.css')
+  return src('src/css/*.css')
   .pipe(sourcemaps.init())
   .pipe(autoprefixer())
   .pipe(cleanCSS())
@@ -35,10 +35,10 @@ function styleTask(){
 }
 
 function jsTask(){
-  return src('script/*.js')
-  .pipe(eslint({}))
-  .pipe(eslint.format())
-  .pipe(eslint.failAfterError())
+  return src('src/script/*.js')
+  // .pipe(eslint({}))
+  // .pipe(eslint.format())
+  // .pipe(eslint.failAfterError())
   .pipe(sourcemaps.init())
   .pipe(uglify())
   .pipe(sourcemaps.write())
@@ -47,7 +47,7 @@ function jsTask(){
 }
 
 function imagesTask(){
-  return src('images/*')
+  return src('src/images/*')
   .pipe(imagemin())
   .pipe(dest('dist/images'))
   .pipe(browsersync.stream());
@@ -55,28 +55,22 @@ function imagesTask(){
 }
 
 function watchFiles() {
-  watch('css/*.css', styleTask);
-  watch('js/*.js', jsTask);
+  watch('src/css/*.css', styleTask);
+  watch('src/script/*.js', jsTask);
   watch('*.html', htmlTask);
-  watch('images/*', imagesTask);
+  watch('src/images/*', imagesTask);
 }
 
 function prefixTask() {
-  return src('css/global.css')
+  return src('src/css/global.css')
   .pipe(autoprefixer())
   .pipe(dest('dist/css/'));
 }
 
-function lintTask() {
-  return src('js/test.js')
-  .pipe(eslint({fix:true}))
-  .pipe(eslint.format())
-  .pipe(dest('dist/js'));
-}
-// .pipe(eslint.failAfterError())
-
 exports.html = htmlTask;
-exports.lint = lintTask;
+exports.style = styleTask;
+exports.js = jsTask;
+exports.images = imagesTask;
 exports.prefix = prefixTask;
 exports.watch = browserSync;
 exports.dev = series(
